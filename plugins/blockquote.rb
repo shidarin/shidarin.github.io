@@ -21,25 +21,26 @@ module Jekyll
   class Blockquote < Liquid::Block
     FullCiteWithTitle = /(\S.*)\s+(https?:\/\/)(\S+)\s+(.+)/i
     FullCite = /(\S.*)\s+(https?:\/\/)(\S+)/i
-    AuthorTitle = /([^,]+),([^,]+)/
     Author =  /(.+)/
 
     def initialize(tag_name, markup, tokens)
       @by = nil
       @source = nil
       @title = nil
-      if markup =~ FullCiteWithTitle
+      if markup.strip =~ FullCiteWithTitle
         @by = $1
         @source = $2 + $3
-        @title = $4.titlecase.strip
-      elsif markup =~ FullCite
+        @title = $4.titlecase
+      elsif markup.strip =~ FullCite
         @by = $1
         @source = $2 + $3
-      elsif markup =~ AuthorTitle
-        @by = $1
-        @title = $2.titlecase.strip
-      elsif markup =~ Author
-        @by = $1
+      elsif markup.strip =~ Author
+        if $1 =~ /([^,]+),([^,]+)/
+          @by = $1
+          @title = $2.titlecase
+        else
+          @by = markup
+        end
       end
       super
     end
