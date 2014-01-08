@@ -21,6 +21,6 @@ I needed a place to post code snippets and describe workflows, and this is that 
 
 Be sure to check out my [GitHub](https://github.com/shidarin), my [twitter](https://twitter.com/shidarin) and my [compositing reel](http://vimeo.com/62896834) (which is also embedded below).
 
-I can be reached at <shidarin-NOSPAM@alphamatte.com>, just remove the `-NOSPAM`.
+I can be reached at <sean@grenadehop.com>.
 
 {% vimeo 62896834 %}
