@@ -1,39 +1,24 @@
 ---
-layout: default
 single: true
 ---
-
-<div>
-{% include post/variables.html %}
-<article class="hentry {% if linklog %}linklog{% endif %}" role="article">
-  {% include article.html %}
-  <footer>
-    <p class="meta">
-      {% include post/meta.html %}
-      {% include custom/post_meta.html %}
-    </p>
-    {% unless page.sharing == false %}
-      {% include post/sharing.html %}
-    {% endunless %}
-    <p class="meta">
-      {% if page.previous.url %}
-        <a class="basic-alignment left" href="{{page.previous.url}}" title="Previous Post: {{page.previous.title}}">&laquo; {{page.previous.title}}</a>
-      {% endif %}
-      {% if page.next.url %}
-        <a class="basic-alignment right" href="{{page.next.url}}" title="Next Post: {{page.next.title}}">{{page.next.title}} &raquo;</a>
-      {% endif %}
-    </p>
-  </footer>
-</article>
-{% include custom/after_post.html %}
-{% if page.comments == true %}{% include comments.html %}{% endif %}
-</div>
-{% unless page.sidebar == false or site.default_sidebar == false %}
-<aside class="sidebar">
-  {% if page.sidebar == nil or page.sidebar == 'collapse' %}
-    {% include_sidebar site.post_sidebar %}
-  {% else %}
-    {% include_sidebar %}
-  {% endif %}
-</aside>
-{% endunless %}
+{% capture root_url %}{{ site.root | strip_slash }}{% endcapture %}
+{% include head.html %}
+<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} {% if page.sidebar == false %} class="no-sidebar" {% endif %} {% if page.sidebar == 'collapse' or site.sidebar == 'collapse' %} class="collapse-sidebar sidebar-footer" {% endif %}>
+  <nav role="navigation">{% include navigation.html %}</nav>
+  <div class="wrapper_single">
+    <div class="container">
+      <article class="span10 offset1" role="article">
+        {% include article.html %}
+        {% if site.disqus_short_name and page.comments == true %}
+          <div class="article-format">
+            <h1>Comments</h1>
+            <div id="disqus_thread" aria-live="polite">{% include post/disqus_thread.html %}</div>
+          </div>
+        {% endif %}
+      </article>
+    </div>
+  </div>
+  {% include footer.html %}
+  {% include after_footer.html %}
+</body>
+</html>

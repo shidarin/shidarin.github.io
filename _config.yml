@@ -20,7 +20,7 @@ subscribe_rss: /atom.xml
 subscribe_email:
 category_feeds: false
 # RSS feeds can list your email address if you like
-email: shidarin@alphamatte.com
+email: sean@grenadehop.com
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -67,14 +67,14 @@ post_sidebar: post_default.html
 respectfully_social: true
 
 # Github repositories
-github_user: 
+github_user: shidarin
 github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
-twitter_user: 
-twitter_tweet_count: 4
+twitter_user: shidarin
+twitter_tweet_count: 0
 twitter_show_replies: false
 twitter_follow_button: true
 twitter_show_follower_count: false
@@ -89,6 +89,21 @@ google_plus_one_size: medium
 google_plus_user:
 google_plus_hidden: false
 google_plus_image_size: 32
+
+# LinkedIn
+linkedin_user: profile/view?id=27225854
+
+# 500px
+500px_user: alphamatte
+
+# 360 cities
+360cities_user: shidarin
+
+# Vimeo
+vimeo_user: shidarin
+
+# Steam
+steam_user: shidarin
 
 # Pinboard
 pinboard_user:
