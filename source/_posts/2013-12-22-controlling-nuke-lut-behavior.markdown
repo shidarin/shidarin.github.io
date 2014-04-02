@@ -13,7 +13,7 @@ The LUT implementation steps that Foundry advises for both 1D and 3D LUTs can us
 
 For those not totally familiar with the concept of LUTs, a good overview is [here](http://www.lightillusion.com/luts.html), while the wikipedia page for [3D LUTs](http://en.wikipedia.org/wiki/3D_lookup_table) is actually pretty decent.
 
-All code presented here is covered under a standard [MIT license](/licensing).
+All code presented here is covered under a standard [MIT license](/licensing). A [gist](http://gist.github.com/shidarin/9925799) of this code is also published.
 
 ##1D LUTs
 
