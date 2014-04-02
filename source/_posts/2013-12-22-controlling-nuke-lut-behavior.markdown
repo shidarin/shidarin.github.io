@@ -11,9 +11,9 @@ The LUT implementation steps that Foundry advises for both 1D and 3D LUTs can us
 
 <!-- more -->
 
-For those not totally familiar with the concept of LUTs, a good overview is [here](http://www.lightillusion.com/luts.html), while the wikipedia pages for [3D LUTs](http://en.wikipedia.org/wiki/3D_lookup_table) is actually pretty decent.
+For those not totally familiar with the concept of LUTs, a good overview is [here](http://www.lightillusion.com/luts.html), while the wikipedia page for [3D LUTs](http://en.wikipedia.org/wiki/3D_lookup_table) is actually pretty decent.
 
-All code presented here is covered under [Rhythm & Hues' MIT license](/licensing).
+All code presented here is covered under a standard [MIT license](/licensing).
 
 ##1D LUTs
 
@@ -36,7 +36,7 @@ nuke.ViewerProcess.register(
 
 ####Protecting The Alpha Channel
 
-The built-in gizmo unfortunately lacks the one option we need, limiting the application of the LUT to `rgb` channels only. However, the gizmo only includes a single node, `ViewerLUT`, that does include that option. We're going to create a group that includes this node for reasons that will become apparent.
+The built-in gizmo unfortunately lacks the one option we need, limiting the application of the LUT to `rgb` channels only. However, the gizmo only includes a single node, `ViewerLUT`, that does include that option. Let's create a basic group that includes the `ViewerLUT` node, but gives us more freedom.
 
 ``` python mark:10
 def lutGroup1D(lutName):
@@ -63,7 +63,7 @@ def lutGroup1D(lutName):
 
 The key is line 10, we need to toggle the `rgb_only` bool checkbox on the `ViewerLUT` node so that it doesn't affect the alpha channels anymore.
 
-Despite recommending the usage of the `ViewerProcess_1DLUT`, the Foundry does point out parameter of the `ViewerLUT` on the very next page.
+Despite recommending the usage of the `ViewerProcess_1DLUT`, the Foundry does point out that parameter of the `ViewerLUT` on the very next page.
 
 Now our 1D LUT is no longer affecting alpha channels, but unfortunately several layers representing data channels. Motion vectors, zdepth, etc, are still being hit with our LUT, as those channels are being shuffled into `rgb` for display purposes.
 
@@ -91,7 +91,7 @@ We need to add a `Remove` node to strip these layers before the `ViewerLUT` node
 
 When changing many knob values at once, it's often helpful to define a dictionary whose keys are the knob name, and values are the desired knob value. Then we can iterate through the dictionary, grabbing the knob object, and setting it to the retrieved value from the dictionary.
 
-Here's the copy node we need to add the removed layers back in from the original input image stream:
+Here's the copy node we need that adds the removed layers back in from the original input image stream:
 
 ``` python start:28 mark:33-35
     # Add our special channels back in
@@ -185,10 +185,6 @@ nuke.ViewerProcess.register(
 )
 ```
 
-####Further Refinement
-
-* Nuke should raise an exception if the lutName provided doesn't already exist in the 1D LUT list. Check if it doesn't, and add our own since we don't want it failing silently.
-
 ##3D LUTs
 
 We have 3 goals for 3D LUTs:
@@ -197,9 +193,9 @@ We have 3 goals for 3D LUTs:
 2. Protect data layers from the transform.
 3. Ensure the transform happens in the correct colorspace.
 
-We don't need to worry about 3D LUTs affecting the alpha channel, because while a 1D LUT affects every channel the same, a 3D LUT has instructions for each color channel specifically- meaning it won't have any instructions for any alpha channels and will leave them alone.
+We don't need to worry about 3D LUTs affecting the alpha channel, because while a 1D LUT affects every channel the same, a 3D LUT has instructions for each color channel specifically- meaning it won't have any instructions for alpha channels and will leave them alone.
 
-Foundry only gives some example nodes to use for 3D LUTs, such as the `Vectorfield` node, but doesn't mention the best node to use, the [OpenColorIO](http://opencolorio.org/) node, `OCIOFileTransform`.
+Foundry gives some example nodes to use for 3D LUTs, such as the `Vectorfield` node, but doesn't mention the best node to use, the [OpenColorIO](http://opencolorio.org/) node, `OCIOFileTransform`.
 
 #####Why Use OpenColorIO?
 
@@ -364,9 +360,8 @@ nuke.ViewerProcess.register(
 )
 ```
 
-####Further Refinement
+####Final Thoughts
 
-* If the facility wants to setup a process where Nuke autoloads all the LUTs within a folder, we'll need some way of deriving what input colorspace each LUT is expecting. This isn't normally a part of say, Iridas cube files, but can be added to the header and then parsed for.
-* Now that we have both `lutGroup1D()` and `lutGroup3D()`, we could possibly combine them- does it make sense to?
-* Should both of these be methods of a LUT class? Would it make more sense to have an object for each LUT, or a single object representing all the LUTs?
+That should be it. You've still got some odds and ends left over- if you want to add a 3D LUT for every *.cube file found in a folder, you need some way of deriving the LUT's desired input colorspace.
 
+Also, a slicker means of doing this would involve creating a base LUT object class, with methods for doing things like deriving input colorspace, building the lut group, and registering it. A class level variable could then keep track of all the created LUTs for science.
