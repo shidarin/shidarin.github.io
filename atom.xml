@@ -4,7 +4,7 @@
   <title><![CDATA[Coding at Windmills]]></title>
   <link href="http://shidarin.github.io/atom.xml" rel="self"/>
   <link href="http://shidarin.github.io/"/>
-  <updated>2014-04-01T17:31:27-07:00</updated>
+  <updated>2014-04-09T12:01:48-07:00</updated>
   <id>http://shidarin.github.io/</id>
   <author>
     <name><![CDATA[Sean Wallitsch]]></name>
@@ -12,6 +12,212 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Nuke Python Module Tips]]></title>
+    <link href="http://shidarin.github.io/2014/Nuke-Python-Module-Tips/"/>
+    <updated>2014-04-09T11:54:00-07:00</updated>
+    <id>http://shidarin.github.io/2014/Nuke-Python-Module-Tips</id>
+    <content type="html"><![CDATA[<p>Using the Nuke 8 python module allows us to use Nuke in a lot of great ways, but there are some tricks to using it correctly. I&#8217;ll cover adding the Nuke library to the python path, using Nuke in a tool with command line arguments, and some common errors.</p>
+
+<!-- more -->
+
+
+<p>The big issue that I can&#8217;t seem to get around is that <code>import nuke</code> will exit python if there aren&#8217;t any available Nuke render licenses. This exit doesn&#8217;t call a <code>SystemExit</code> exception, and isn&#8217;t any of the <code>__builtin__</code> exit calls or the <code>os._exit</code> and <code>thread.exit</code> calls. Depending on the license server configuration, one should be able to query the server to see if there are licenses, and only continue if one is available.</p>
+
+<h2>Adding the Nuke Library to Python</h2>
+
+<p>We can add Nuke&#8217;s library to the python path in one of two ways- either changing the system&#8217;s python path, or appending Nuke&#8217;s library directly in the python script. We&#8217;ll cover the second method here.</p>
+
+<p>It&#8217;s really as simple as importing <code>sys</code> and using <code>sys.path.append()</code>.</p>
+
+<h4>Hardcoding the Absolute Location</h4>
+
+<figure class='code'><figcaption><span>Version Locked Import</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;/usr/apps/nuke-8.0v3/lib/python2.7/site-packages&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The downside of this is that it&#8217;s locked to a specific Nuke version and location. It&#8217;d be much easier to change the python path once for the entire system, than to change the Nuke version in a bunch of different files. The middle ground is to create an environment variable each script references, and then change that when the version or location changes.</p>
+
+<h4>Using an Env Variable for the Version</h4>
+
+<figure class='code'><figcaption><span>Version Variable </span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number marked'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number marked'>5</span>
+<span class='line-number marked'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number marked'>8</span>
+<span class='line-number marked'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line marked start end'><span class="kn">import</span> <span class="nn">os</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line marked start'><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span class='line marked'>    <span class="s">&#39;/usr/apps/nuke-{ver}/lib/python2.7/site-packages&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+</span><span class='line marked'>        <span class="n">ver</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getEnv</span><span class="p">(</span><span class="n">varname</span><span class="o">=</span><span class="s">&#39;nukeVersion&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&#39;8.0v1&#39;</span><span class="p">),</span>
+</span><span class='line marked'>    <span class="p">)</span>
+</span><span class='line marked end'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The benefit with this method is that if the environment variable isn&#8217;t found, <code>os.getenv</code> will default to the provided <code>value</code> argument- which we can set to a known safe value- if not the latest.</p>
+
+<h4>Using an Env Variable for the Location</h4>
+
+<p>Using an environment variable for the nuke directory location is safer if there&#8217;s a possibility the application location will change.</p>
+
+<figure class='code'><figcaption><span>Nuke Directory Variable</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number marked'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">os</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span class='line marked start'>    <span class="s">&#39;{nukeDir}lib/python2.7/site-packages&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+</span><span class='line marked end'>        <span class="n">nukeDir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getEnv</span><span class="p">(</span><span class="n">varname</span><span class="o">=</span><span class="s">&#39;nukeDir&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&#39;/usr/apps/nuke-8.0v1/&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Same method only the default value is a little messier. Note that many times calling environment variables with the dictionary-like <code>os.environ[varname]</code> is preferable, as you can do <code>Try/Except</code> looking for a <code>KeyError</code> and then do more advanced behavior in the event the variable isn&#8217;t set. We don&#8217;t need that in this simple example.</p>
+
+<h2>Using Nuke in a Command Line Interface</h2>
+
+<p>Having all of Nuke at our fingertips when making a CLI tool for image manipulation can be pretty powerful, but <code>import nuke</code> currently has a little problem with usage in CLIs- it eats up the command line arguments!</p>
+
+<figure class='code'><figcaption><span>Sample CLI Arg Script</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments before &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments after &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Save this to a script and call it and we get:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>>>> python test.py hello world
+</span><span class='line'>Printing command line arguments before "import nuke":
+</span><span class='line'>['test.py', 'hello', 'world']
+</span><span class='line'>Printing command line arguments after "import nuke":
+</span><span class='line'>['']</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Protecting Args</h4>
+
+<p>Protecting the arguments provided to the tool is pretty easy- just assign them
+to another variable and re-assign them after we import nuke.</p>
+
+<figure class='code'><figcaption><span>Fixed CLI Arg Script</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number marked'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number marked'>13</span>
+<span class='line-number marked'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments before &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span><span class='line'>
+</span><span class='line marked start'><span class="n">held</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span><span class='line marked end'><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span><span class='line'>
+</span><span class='line marked start'><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="n">held</span>
+</span><span class='line marked end'><span class="k">del</span> <span class="n">held</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments after &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we get:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>>>> python test.py hello world
+</span><span class='line'>Printing command line arguments before "import nuke":
+</span><span class='line'>['test.py', 'hello', 'world']
+</span><span class='line'>Printing command line arguments after "import nuke":
+</span><span class='line'>['test.py', 'hello', 'world']</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we can go on to parse those args with ArgumentParser or anything else.</p>
+
+<h2>System Library Conflicts</h2>
+
+<p>One thing to be aware of is that there is plenty of opportunity for library conflicts between what is normally compiled into Nuke (available inside of Nuke), and what you normally have in the system (available from within a python shell).</p>
+
+<p>If something doesn&#8217;t work in a python shell (even with the compiled python that ships with Nuke), but works inside of Nuke, it&#8217;s a good chance you&#8217;re looking at a library conflict.</p>
+
+<p>If you run into these, check with your System&#8217;s people and see if they can track it down. You might have to run a preload before launching the script, which is very undesirable but sometimes the only solution.</p>
+
+<p>If your systems people can replicate the conflict even with a bare install of your OS, make sure to report the conflict to Foundry as they are tracking these down.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Controlling Nuke LUT behavior]]></title>
@@ -25,7 +231,7 @@
 
 <p>For those not totally familiar with the concept of LUTs, a good overview is <a href="http://www.lightillusion.com/luts.html">here</a>, while the wikipedia page for <a href="http://en.wikipedia.org/wiki/3D_lookup_table">3D LUTs</a> is actually pretty decent.</p>
 
-<p>All code presented here is covered under a standard <a href="http://shidarin.github.io/licensing">MIT license</a>. A <a href="http://gist.github.com/shidarin/9925799">gist</a> of this code is also published.</p>
+<p>All code presented here is covered under a standard <a href="http://shidarin.github.io/licensing">MIT license</a>, and owned by Rhythm &amp; Hues (posted with permission). A <a href="http://gist.github.com/shidarin/9925799">gist</a> of this code is also published.</p>
 
 <h2>1D LUTs</h2>
 
@@ -620,6 +826,18 @@
 <p>That should be it. You&#8217;ve still got some odds and ends left over- if you want to add a 3D LUT for every *.cube file found in a folder, you need some way of deriving the LUT&#8217;s desired input colorspace.</p>
 
 <p>Also, a slicker means of doing this would involve creating a base LUT object class, with methods for doing things like deriving input colorspace, building the lut group, and registering it. A class level variable could then keep track of all the created LUTs for science.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tywin Lannister Quote]]></title>
+    <link href="http://shidarin.github.io/2013/tywin-lannister-quote/"/>
+    <updated>2013-06-15T09:28:00-07:00</updated>
+    <id>http://shidarin.github.io/2013/tywin-lannister-quote</id>
+    <content type="html"><![CDATA[<p>A nice quote by Tywin Lannister taken from <em>A Storm of Sword</em> book.</p>
+
+<blockquote><p>The greatest fools are ofttimes more clever then the men who laugh at them.</p><footer><strong>Tywin Lannister</strong> <cite>A Storm of Swords</cite></footer></blockquote>
+
 ]]></content>
   </entry>
   
