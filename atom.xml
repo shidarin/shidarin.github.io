@@ -4,7 +4,7 @@
   <title><![CDATA[Coding at Windmills]]></title>
   <link href="http://shidarin.github.io/atom.xml" rel="self"/>
   <link href="http://shidarin.github.io/"/>
-  <updated>2014-04-09T12:04:59-07:00</updated>
+  <updated>2014-04-19T16:16:45-07:00</updated>
   <id>http://shidarin.github.io/</id>
   <author>
     <name><![CDATA[Sean Wallitsch]]></name>
@@ -12,6 +12,59 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SMPTE Timecode Segment]]></title>
+    <link href="http://shidarin.github.io/2014/SMPTE-Timecode-Segment/"/>
+    <updated>2014-04-19T15:50:00-07:00</updated>
+    <id>http://shidarin.github.io/2014/SMPTE-Timecode-Segment</id>
+    <content type="html"><![CDATA[<p>While developing a test suite for another project, I started writing a bit of python to generate SMPTE timecode- start, end, and duration. I needed to have the ability for it to generate random timecode as well.</p>
+
+<!-- more -->
+
+
+<p>In the end, it became so large it needed its own tests (Timecode can be pretty complex) and I ended up throwing it on a gist. It&#8217;s of limited use now, my end goal would be to develop a datetime style TimeCode class which could be added,
+subtracted, delta&#8217;d etc.</p>
+
+<h2>Other SMPTE Timecode projects</h2>
+
+<p>I might end up forking the abandoned <a href="https://pypi.python.org/pypi/pytimecode.py/0.1.0">pytimecode</a> (which is thankfully under an MIT License) and combining it with something like <a href="https://www.gitorious.org/smptecalq">smptecalc</a>, which is unfortunately without any attached license (so forking it and developing it on my own is legally iffy).</p>
+
+<h2>SMPTE TimeCode Segment</h2>
+
+<h3>Usage</h3>
+
+<p><code>TimeCodeSegment</code> takes <code>hour</code>, <code>minute</code>, <code>second</code>, and <code>frame</code> args for initializing the starting timecode, and <code>duration</code> (in frames) and <code>fps</code> for calculating an ending timecode and duration. If any of these args (except fps) are not provided during class initializing, they will be randomized. You can actually just call TimeCodeSegment() to get a completely random, 24 frames per second timecode segment.</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">TimeCodeSegment</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">start</span>
+</span><span class='line'><span class="s">&#39;12:45:10:20&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">end</span>
+</span><span class='line'><span class="s">&#39;12:45:23:08&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">dur</span>
+</span><span class='line'><span class="s">&#39;00:00:12:12&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Testing</h3>
+
+<p>The gist comes with a 100% coverage test suite, so you if you just call the python file you&#8217;ll run the unittests.</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>python smpte_timecode_segment.py 
+</span><span class='line'>..........
+</span><span class='line'>----------------------------------------------------------------------
+</span><span class='line'>Ran 10 tests in 0.001s
+</span><span class='line'>
+</span><span class='line'>OK</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Code</h2>
+
+<div><script src='https://gist.github.com/11091783.js?file='></script>
+<noscript><pre><code>&lt;html&gt;&lt;body&gt;You are being &lt;a href=&quot;https://github.com/gist/11091783&quot;&gt;redirected&lt;/a&gt;.&lt;/body&gt;&lt;/html&gt;</code></pre></noscript></div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Nuke Python Module Tips]]></title>

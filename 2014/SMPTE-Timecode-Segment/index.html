@@ -1,12 +1,11 @@
 
-
 <!DOCTYPE html>
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Coding at Windmills</title>
+  <title>SMPTE Timecode Segment - Coding at Windmills</title>
   <meta name="author" content="Sean Wallitsch">
   <link rel="author" href="humans.txt">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -14,9 +13,7 @@
   
     
   
-  <meta name="description" content="
-      
-    ">
+  <meta name="description" content="While developing a test suite for another project, I started writing a bit of python to generate SMPTE timecode- start, end, and &hellip;">
   
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -24,19 +21,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shidarin.github.io/">
+  <link rel="canonical" href="http://shidarin.github.io/2014/SMPTE-Timecode-Segment/">
   <link href="/favicon.png" rel="icon">
   <link href='http://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Coding at Windmills" type="application/atom+xml">
   <meta name="og:type" content="website" />
   <meta name="og:site_name" content="Coding at Windmills" />
-  <meta name="og:title" content="Coding at Windmills" />
-  <meta name="og:description" content="
-      
-    " />
-  <meta name="og:url" content="http://shidarin.github.io/index.html"/>
-  <meta name="url" content="http://shidarin.github.io/index.html">
+  <meta name="og:title" content="SMPTE Timecode Segment" />
+  <meta name="og:description" content="While developing a test suite for another project, I started writing a bit of python to generate SMPTE timecode- start, end, and &hellip;" />
+  <meta name="og:url" content="http://shidarin.github.io/2014/SMPTE-Timecode-Segment/"/>
+  <meta name="url" content="http://shidarin.github.io/2014/SMPTE-Timecode-Segment/">
+  
+  <meta name="subject" content="editingpythonvfx"/>
+  <meta name="category" content="editingpythonvfx"/>
   
   <meta name="distribution" content="global">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
@@ -48,94 +46,39 @@
 </head>
 
 <body   >
-  <div id="front-wrapper">
-  <div id="hero">
-    <div id="hero-inner" class="container">
-      <div class="span10 offset1">
-  <h1>
-    <font color=#f7f7f7>Coding at Windmills</font>
-  </h1>
-  <h2><font color=#f4f4f4>Sean Wallitsch&#8217;s GitHub Blog</font></h2>
-</div>
-
-    </div>
+  <nav role="navigation"><div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="/">Coding at Windmills</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/licensing">Licensing</a></li>
+      <li><a href="/blog/archives">Archives</a></li>
+    </ul>
+    <ul class="nav" data-subscription="rss">
+      <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+      
+    </ul>
+      
+    <form class="navbar-form" action="http://google.com/search" method="get">
+      <fieldset role="search">
+        <input type="hidden" name="q" value="site:shidarin.github.io" />
+        <input class="span2" type="text" name="q" results="0" placeholder="Search"/>
+      </fieldset>
+    </form>
+      
+    
   </div>
-  <section id="sub-hero">
+</div>
+</nav>
+  <div class="wrapper_single">
     <div class="container">
-      <div class="row">
-  <div class="span2">
-    <aside>
-    <p>
-        <img src="/images/profile.jpg">
-    </p>
-</aside>
-  </div>
-  <div class="span4">
-    <h2><a href="/about/">about me</a></h2>
-<p>I do photography, visual effects, python and more. In my free time I game, hike around and raise my family.</p>
-
-  </div>
-  <div class="span4">
-    
-
-  </div>
-  <div class="span3">
-    <h2>found on</h2>
-
-<a href="https://github.com/shidarin/" rel="tooltip" title="Github"><img class="social_icon" title="Github" alt="github icon" src="/images/glyphicons_381_github.png"></a>
-
-
-
-
-
-<a href="http://www.linkedin.com/profile/view?id=27225854" rel="tooltip" title="Linkedin"><img class="social_icon" title="Linkedin" alt="Linkedin icon" src="/images/glyphicons_377_linked_in.png"></a>
-
-
-
-<a href="http://twitter.com/shidarin" rel="tooltip" title="Twitter"><img class="social_icon" title="Twitter" alt="Twitter icon" src="/images/glyphicons_391_twitter_t.png"></a>
-
-
-
-<a href="http://vimeo.com/shidarin" rel="tooltip" title="Vimeo"><img class="social_icon" title="Vimeo" alt="Vimeo icon" src="/images/glyphicons_982_vimeo.png"></a>
-
-
-
-<a href="http://500px.com/alphamatte" rel="tooltip" title="500px"><img class="social_icon" title="500px" alt="500px icon" src="/images/glyphicons_980_500.png"></a>
-
-
-
-<a href="http://www.360cities.net/profile/shidarin" rel="tooltip" title="360 Cities Panoramic Photography"><img class="social_icon" title="360 Cities" alt="360 Cities icon" src="/images/glyphicons_981_360cities.png"></a>
-
-
-
-<a href="http://steamcommunity.com/id/shidarin" rel="tooltip" title="Steam"><img class="social_icon" title="Steam" alt="Steam icon" src="/images/glyphicons_983_steam.png"></a>
-
-
-
-
-
-
-
-<h2>contact at</h2>
-<a href="mailto:sean@grenadehop.com">sean@grenadehop.com</a>
-
-
-  </div>
-</div>
-
-    </div>
-  </section>
-  <div class="container">
-    <div class="row" id="post-container">
-    
-    
-    
-      <article class="span4">
+      <article class="span10 offset1" role="article">
         <div class="article-format">
 
   <header>
     
-      <h1 class="entry-title"><a href="/2014/SMPTE-Timecode-Segment/">SMPTE Timecode Segment</a></h1>
+      <h1 class="entry-title">SMPTE Timecode Segment</h1>
     
     
       <p class="meta">
@@ -179,30 +122,55 @@ posted in
 
   <div class="entry-content"><p>While developing a test suite for another project, I started writing a bit of python to generate SMPTE timecode- start, end, and duration. I needed to have the ability for it to generate random timecode as well.</p>
 
+<!-- more -->
+
+
+<p>In the end, it became so large it needed its own tests (Timecode can be pretty complex) and I ended up throwing it on a gist. It&#8217;s of limited use now, my end goal would be to develop a datetime style TimeCode class which could be added,
+subtracted, delta&#8217;d etc.</p>
+
+<h2>Other SMPTE Timecode projects</h2>
+
+<p>I might end up forking the abandoned <a href="https://pypi.python.org/pypi/pytimecode.py/0.1.0">pytimecode</a> (which is thankfully under an MIT License) and combining it with something like <a href="https://www.gitorious.org/smptecalq">smptecalc</a>, which is unfortunately without any attached license (so forking it and developing it on my own is legally iffy).</p>
+
+<h2>SMPTE TimeCode Segment</h2>
+
+<h3>Usage</h3>
+
+<p><code>TimeCodeSegment</code> takes <code>hour</code>, <code>minute</code>, <code>second</code>, and <code>frame</code> args for initializing the starting timecode, and <code>duration</code> (in frames) and <code>fps</code> for calculating an ending timecode and duration. If any of these args (except fps) are not provided during class initializing, they will be randomized. You can actually just call TimeCodeSegment() to get a completely random, 24 frames per second timecode segment.</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">TimeCodeSegment</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">start</span>
+</span><span class='line'><span class="s">&#39;12:45:10:20&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">end</span>
+</span><span class='line'><span class="s">&#39;12:45:23:08&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">dur</span>
+</span><span class='line'><span class="s">&#39;00:00:12:12&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Testing</h3>
+
+<p>The gist comes with a 100% coverage test suite, so you if you just call the python file you&#8217;ll run the unittests.</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>python smpte_timecode_segment.py 
+</span><span class='line'>..........
+</span><span class='line'>----------------------------------------------------------------------
+</span><span class='line'>Ran 10 tests in 0.001s
+</span><span class='line'>
+</span><span class='line'>OK</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Code</h2>
+
+<div><script src='https://gist.github.com/11091783.js?file='></script>
+<noscript><pre><code>&lt;html&gt;&lt;body&gt;You are being &lt;a href=&quot;https://github.com/gist/11091783&quot;&gt;redirected&lt;/a&gt;.&lt;/body&gt;&lt;/html&gt;</code></pre></noscript></div>
+
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2014/SMPTE-Timecode-Segment/">Read on &rarr;</a>
-    </footer>
-  
 
 
-</div>
-
-      </article>
-    
-    
-      <article class="span4">
-        <div class="article-format">
-
-  <header>
-    
-      <h1 class="entry-title"><a href="/2014/Nuke-Python-Module-Tips/">Nuke Python Module Tips</a></h1>
-    
-    
-      <p class="meta">
-        
+  <footer>
+    <p class="meta">
+      
   
 
 
@@ -211,7 +179,7 @@ posted in
   
 
  - 
-        
+      
 
 
 
@@ -223,112 +191,38 @@ posted in
   
 
 
-<time datetime="2014-04-09T11:54:00-07:00" pubdate data-updated="true">Apr 9<span>th</span>, 2014</time> - 
-        
+<time datetime="2014-04-19T15:50:00-07:00" pubdate data-updated="true">Apr 19<span>th</span>, 2014</time> - 
+      
 
 posted in
 <span class="categories">
   
-    <a class='category' href='/blog/categories/dev/'>dev</a>, <a class='category' href='/blog/categories/nuke/'>nuke</a>, <a class='category' href='/blog/categories/python/'>python</a>
+    <a class='category' href='/blog/categories/editing/'>editing</a>, <a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/vfx/'>vfx</a>
   
 </span>
 
 
-        
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>Using the Nuke 8 python module allows us to use Nuke in a lot of great ways, but there are some tricks to using it correctly. I&#8217;ll cover adding the Nuke library to the python path, using Nuke in a tool with command line arguments, and some common errors.</p>
-
-</div>
+      <div class="sharing">
   
   
-    <footer>
-      <a rel="full-article" href="/2014/Nuke-Python-Module-Tips/">Read on &rarr;</a>
-    </footer>
   
-
-
 </div>
 
+    
+    
+      <a class="pull-left" href="/2014/Nuke-Python-Module-Tips/" title="Previous Post: Nuke Python Module Tips">&laquo; Nuke Python Module Tips</a>
+    
+    
+  </footer>
+
+</div>
+
+        
       </article>
-    
-    
-      <article class="span4">
-        <div class="article-format">
-
-  <header>
-    
-      <h1 class="entry-title"><a href="/2013/controlling-nuke-lut-behavior/">Controlling Nuke LUT Behavior</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-  
-    <span class="byline author vcard">by <span class="fn">Sean Wallitsch</span></span>
-  
-
- - 
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-22T14:33:00-08:00" pubdate data-updated="true">Dec 22<span>nd</span>, 2013</time> - 
-        
-
-posted in
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/dev/'>dev</a>, <a class='category' href='/blog/categories/luts/'>luts</a>, <a class='category' href='/blog/categories/nuke/'>nuke</a>, <a class='category' href='/blog/categories/python/'>python</a>
-  
-</span>
-
-
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The LUT implementation steps that Foundry advises for both 1D and 3D LUTs can use some work. By default, the 1D LUTs affect every channel (even alphas). For 3D LUTs it depends on the node used, but problems can vary from only affecting the default <code>rgb</code> to touching every layer- even data layers.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2013/controlling-nuke-lut-behavior/">Read on &rarr;</a>
-    </footer>
-  
-
-
-</div>
-
-      </article>
-    
     </div>
-      <div class="row">
-        <ul class="pager">
-          
-          
-        </ul>
-      </div>
   </div>
-</div>
-
-
   <div id="footer-widgets">
   <div class="container">
     <div class="row">
