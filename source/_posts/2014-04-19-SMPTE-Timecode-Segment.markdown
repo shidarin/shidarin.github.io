@@ -36,7 +36,7 @@ I might end up forking the abandoned [pytimecode](https://pypi.python.org/pypi/p
 
 ### Testing
 
-The gist comes with a 100% coverage test suite, so you if you just call the python file you'll run the unittests.
+The gist comes with a 100% coverage test suite, so if you just call the python file you'll run the unittests.
 
 ``` linenos:false
 python smpte_timecode_segment.py 
