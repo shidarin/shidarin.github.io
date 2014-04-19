@@ -4,7 +4,7 @@
   <title><![CDATA[Coding at Windmills]]></title>
   <link href="http://shidarin.github.io/atom.xml" rel="self"/>
   <link href="http://shidarin.github.io/"/>
-  <updated>2014-04-19T16:17:43-07:00</updated>
+  <updated>2014-04-19T16:21:27-07:00</updated>
   <id>http://shidarin.github.io/</id>
   <author>
     <name><![CDATA[Sean Wallitsch]]></name>
@@ -48,7 +48,7 @@ subtracted, delta&#8217;d etc.</p>
 
 <h3>Testing</h3>
 
-<p>The gist comes with a 100% coverage test suite, so you if you just call the python file you&#8217;ll run the unittests.</p>
+<p>The gist comes with a 100% coverage test suite, so if you just call the python file you&#8217;ll run the unittests.</p>
 
 <figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>python smpte_timecode_segment.py 
 </span><span class='line'>..........
