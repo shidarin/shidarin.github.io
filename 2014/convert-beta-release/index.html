@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>cdl_convert Beta Release - Coding at Windmills</title>
+  <meta name="author" content="Sean Wallitsch">
+  <link rel="author" href="humans.txt">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  
+    
+  
+  <meta name="description" content="The last few months I&#8217;ve been working on a python module that works as both a simple script to convert between ASC &hellip;">
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shidarin.github.io/2014/convert-beta-release/">
+  <link href="/favicon.png" rel="icon">
+  <link href='http://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Coding at Windmills" type="application/atom+xml">
+  <meta name="og:type" content="website" />
+  <meta name="og:site_name" content="Coding at Windmills" />
+  <meta name="og:title" content="cdl_convert Beta Release" />
+  <meta name="og:description" content="The last few months I&#8217;ve been working on a python module that works as both a simple script to convert between ASC &hellip;" />
+  <meta name="og:url" content="http://shidarin.github.io/2014/convert-beta-release/"/>
+  <meta name="url" content="http://shidarin.github.io/2014/convert-beta-release/">
+  
+  <meta name="subject" content="cdl_convertcolor"/>
+  <meta name="category" content="cdl_convertcolor"/>
+  
+  <meta name="distribution" content="global">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="/">Coding at Windmills</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/licensing">Licensing</a></li>
+      <li><a href="/blog/archives">Archives</a></li>
+    </ul>
+    <ul class="nav" data-subscription="rss">
+      <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+      
+    </ul>
+      
+    <form class="navbar-form" action="http://google.com/search" method="get">
+      <fieldset role="search">
+        <input type="hidden" name="q" value="site:shidarin.github.io" />
+        <input class="span2" type="text" name="q" results="0" placeholder="Search"/>
+      </fieldset>
+    </form>
+      
+    
+  </div>
+</div>
+</nav>
+  <div class="wrapper_single">
+    <div class="container">
+      <article class="span10 offset1" role="article">
+        <div class="article-format">
+
+  <header>
+    
+      <h1 class="entry-title">Cdl_convert Beta Release</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+  
+    <span class="byline author vcard">by <span class="fn">Sean Wallitsch</span></span>
+  
+
+ - 
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-15T11:52:00-07:00" pubdate data-updated="true">Jun 15<span>th</span>, 2014</time> - 
+        
+
+posted in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cdl-convert/'>cdl_convert</a>, <a class='category' href='/blog/categories/color/'>color</a>
+  
+</span>
+
+
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The last few months I&#8217;ve been working on a python module that works as both a simple script to convert between <a href="http://en.wikipedia.org/wiki/ASC_CDL">ASC ColorDecisionList</a> formats, and a fully fledged Python API.</p>
+
+<!-- more -->
+
+
+<p>The module can be installed with pip via the <a href="http://pypi.python.org/pypi/cdl_convert/">pypi repo</a>:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>pip install cdl_convert    </span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or you can grab the source on <a href="https://github.com/shidarin/cdl_convert">github</a>.</p>
+
+<p>It&#8217;s got <a href="http://cdl-convert.readthedocs.org/">full documentation at ReadTheDocs</a>, and we use <a href="https://github.com/shidarin/cdl_convert/issues?state=open">issue tracking on github</a>.</p>
+
+<p>It&#8217;s mostly feature complete now- the only features it lacks are:</p>
+
+<ul>
+<li>Parse CMX EDL</li>
+<li>Parse OCIOCDLs in .nk scripts</li>
+<li>Write OCIOCDLs into .nk scripts</li>
+<li>Generate a Nuke node (if called from within a Nuke session)</li>
+</ul>
+
+
+<p>The rest are bug fixes.</p>
+
+<h2>Sample Script Usage</h2>
+
+<p>This will take a <code>FLEx</code> file, named <code>big_edl_with_cdls.flex</code>, and convert
+it to individual <code>cc</code> files.</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>cdl_convert big_edl_with_cdls.flex -o .cc</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Sample API usage</h2>
+
+<p>Parsing a file from disk:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">cdl_convert</span><span class="o">.</span><span class="n">parse_file</span><span class="p">(</span><span class="s">&#39;./xf/015.cc&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">slope</span>
+</span><span class='line'><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.02401&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.00804&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.89562&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">offset</span>
+</span><span class='line'><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;-0.00864&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;-0.00261&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.03612&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">power</span>
+</span><span class='line'><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.0&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.0&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.0&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">sat</span>
+</span><span class='line'><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.2&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'><span class="s">&#39;015_xf_seqGrade_v01&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">file_in</span>
+</span><span class='line'><span class="s">&#39;/Users/niven/cdls/xf/015.cc&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or create one from scratch and attach it to a collection:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">coll</span> <span class="o">=</span> <span class="n">cdl_convert</span><span class="o">.</span><span class="n">ColorCollection</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">cdl_convert</span><span class="o">.</span><span class="n">ColorCorrection</span><span class="p">(</span><span class="s">&#39;myUniqueId&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">slope</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="p">(</span>
+</span><span class='line'>    <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;2334.3789378921378901921738979&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;3789.32789137891278947891478912738972198731289&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.000000000000000000000000000000000001&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">power</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.243</span><span class="p">,</span> <span class="mf">4.53</span><span class="p">,</span> <span class="mf">9.23572</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">sat</span> <span class="o">=</span> <span class="s">&#39;6.7&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">coll</span><span class="o">.</span><span class="n">append_child</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span>
+</span><span class='line'><span class="bp">True</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">coll</span><span class="o">.</span><span class="n">xml</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">ColorCorrectionCollection</span> <span class="n">xmlns</span><span class="o">=</span><span class="s">&quot;urn:ASC:CDL:v1.01&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">ColorCorrection</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;myUniqueId&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="n">SOPNode</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">Slope</span><span class="o">&gt;</span><span class="mf">1.0</span> <span class="mf">2.0</span> <span class="mf">3.0</span><span class="o">&lt;/</span><span class="n">Slope</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">Offset</span><span class="o">&gt;</span><span class="mf">2334.3789378921378901921738979</span> <span class="mf">3789.32789137891278947891478912738972198731289</span> <span class="mf">0.000000000000000000000000000000000001</span><span class="o">&lt;/</span><span class="n">Offset</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">Power</span><span class="o">&gt;</span><span class="mf">1.243</span> <span class="mf">4.53</span> <span class="mf">9.23572</span><span class="o">&lt;/</span><span class="n">Power</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;/</span><span class="n">SOPNode</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="n">SATNode</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">Saturation</span><span class="o">&gt;</span><span class="mf">6.7</span><span class="o">&lt;/</span><span class="n">Saturation</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;/</span><span class="n">SATNode</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;/</span><span class="n">ColorCorrection</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ColorCorrectionCollection</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">coll</span><span class="o">.</span><span class="n">set_to_cdl</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">coll</span><span class="o">.</span><span class="n">xml</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">ColorDecisionList</span> <span class="n">xmlns</span><span class="o">=</span><span class="s">&quot;urn:ASC:CDL:v1.01&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">ColorDecision</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="n">ColorCorrection</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;myUniqueId&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">SOPNode</span><span class="o">&gt;</span>
+</span><span class='line'>                <span class="o">&lt;</span><span class="n">Slope</span><span class="o">&gt;</span><span class="mf">1.0</span> <span class="mf">2.0</span> <span class="mf">3.0</span><span class="o">&lt;/</span><span class="n">Slope</span><span class="o">&gt;</span>
+</span><span class='line'>                <span class="o">&lt;</span><span class="n">Offset</span><span class="o">&gt;</span><span class="mf">2334.3789378921378901921738979</span> <span class="mf">3789.32789137891278947891478912738972198731289</span> <span class="mf">0.000000000000000000000000000000000001</span><span class="o">&lt;/</span><span class="n">Offset</span><span class="o">&gt;</span>
+</span><span class='line'>                <span class="o">&lt;</span><span class="n">Power</span><span class="o">&gt;</span><span class="mf">1.243</span> <span class="mf">4.53</span> <span class="mf">9.23572</span><span class="o">&lt;/</span><span class="n">Power</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;/</span><span class="n">SOPNode</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">SATNode</span><span class="o">&gt;</span>
+</span><span class='line'>                <span class="o">&lt;</span><span class="n">Saturation</span><span class="o">&gt;</span><span class="mf">6.7</span><span class="o">&lt;/</span><span class="n">Saturation</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;/</span><span class="n">SATNode</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;/</span><span class="n">ColorCorrection</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;/</span><span class="n">ColorDecision</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ColorDecisionList</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Share, enjoy and give feedback.</p>
+
+<p>Did I mention the test suite with <strong><em>glorious</em></strong> 100% coverage?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+  
+    <span class="byline author vcard">by <span class="fn">Sean Wallitsch</span></span>
+  
+
+ - 
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-15T11:52:00-07:00" pubdate data-updated="true">Jun 15<span>th</span>, 2014</time> - 
+      
+
+posted in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cdl-convert/'>cdl_convert</a>, <a class='category' href='/blog/categories/color/'>color</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    
+      <a class="pull-left" href="/2014/SMPTE-Timecode-Segment/" title="Previous Post: SMPTE Timecode Segment">&laquo; SMPTE Timecode Segment</a>
+    
+    
+  </footer>
+
+</div>
+
+        
+      </article>
+    </div>
+  </div>
+  <div id="footer-widgets">
+  <div class="container">
+    <div class="row">
+  <div class="span3">
+    <h2>recent posts</h2>
+    <ul class="recent_posts">
+      
+        <li>
+          <a href="/2014/convert-beta-release/">cdl_convert Beta Release</a>
+        </li>
+      
+        <li>
+          <a href="/2014/SMPTE-Timecode-Segment/">SMPTE Timecode Segment</a>
+        </li>
+      
+        <li>
+          <a href="/2014/Nuke-Python-Module-Tips/">Nuke Python Module Tips</a>
+        </li>
+      
+        <li>
+          <a href="/2013/controlling-nuke-lut-behavior/">Controlling Nuke LUT behavior</a>
+        </li>
+      
+    </ul>
+    <h2><a href="/blog/archives">archives</a></h2>
+  </div>
+  <div class="span3">
+    
+
+  </div>
+  <div class="span3">
+    
+<h2>twitter</h2>
+<a href="https://twitter.com/shidarin" class="twitter-follow-button" data-show-count="true" data-lang="en">Follow @shidarin</a>
+
+
+  </div>
+  <div class="span3">
+    <h2>found on</h2>
+
+<a href="https://github.com/shidarin/" rel="tooltip" title="Github"><img class="social_icon" title="Github" alt="github icon" src="/images/glyphicons_381_github.png"></a>
+
+
+
+
+
+<a href="http://www.linkedin.com/profile/view?id=27225854" rel="tooltip" title="Linkedin"><img class="social_icon" title="Linkedin" alt="Linkedin icon" src="/images/glyphicons_377_linked_in.png"></a>
+
+
+
+<a href="http://twitter.com/shidarin" rel="tooltip" title="Twitter"><img class="social_icon" title="Twitter" alt="Twitter icon" src="/images/glyphicons_391_twitter_t.png"></a>
+
+
+
+<a href="http://vimeo.com/shidarin" rel="tooltip" title="Vimeo"><img class="social_icon" title="Vimeo" alt="Vimeo icon" src="/images/glyphicons_982_vimeo.png"></a>
+
+
+
+<a href="http://500px.com/alphamatte" rel="tooltip" title="500px"><img class="social_icon" title="500px" alt="500px icon" src="/images/glyphicons_980_500.png"></a>
+
+
+
+<a href="http://www.360cities.net/profile/shidarin" rel="tooltip" title="360 Cities Panoramic Photography"><img class="social_icon" title="360 Cities" alt="360 Cities icon" src="/images/glyphicons_981_360cities.png"></a>
+
+
+
+<a href="http://steamcommunity.com/id/shidarin" rel="tooltip" title="Steam"><img class="social_icon" title="Steam" alt="Steam icon" src="/images/glyphicons_983_steam.png"></a>
+
+
+
+
+
+
+
+<h2>contact at</h2>
+<a href="mailto:sean@grenadehop.com">sean@grenadehop.com</a>
+
+
+  </div>
+</div>
+
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-left">
+  <a href="/">Coding at Windmills</a>
+  - Copyright &copy; 2014 - Sean Wallitsch
+</p>
+<p class="pull-right">
+  <span>Powered by <a href="http://octopress.org/">Octopress</a>.</span>
+  
+    <span>Designed by <a href="http://www.AdrianArtiles.com">Adrian Artiles</a>.</span>
+  
+</p>
+
+  </div>
+</footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script>window.jQuery || document.write('<script src="/javascripts/libs/jquery-1.7.2.min.js" type="text/javascript"><\/script>')</script>
+<script src="/javascripts/libs/bootstrap.min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.tweet.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.instagram.js" type="text/javascript"></script>
+<script src="/javascripts/libs/jquery.masonry.min.js" type="text/javascript"></script>
+<script src="/javascripts/custom.js" type="text/javascript"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+</body>
+</html>

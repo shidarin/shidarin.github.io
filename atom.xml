@@ -4,7 +4,7 @@
   <title><![CDATA[Coding at Windmills]]></title>
   <link href="http://shidarin.github.io/atom.xml" rel="self"/>
   <link href="http://shidarin.github.io/"/>
-  <updated>2014-04-19T16:21:27-07:00</updated>
+  <updated>2014-07-08T18:06:30-07:00</updated>
   <id>http://shidarin.github.io/</id>
   <author>
     <name><![CDATA[Sean Wallitsch]]></name>
@@ -12,6 +12,119 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[cdl_convert Beta Release]]></title>
+    <link href="http://shidarin.github.io/2014/convert-beta-release/"/>
+    <updated>2014-06-15T11:52:00-07:00</updated>
+    <id>http://shidarin.github.io/2014/convert-beta-release</id>
+    <content type="html"><![CDATA[<p>The last few months I&#8217;ve been working on a python module that works as both a simple script to convert between <a href="http://en.wikipedia.org/wiki/ASC_CDL">ASC ColorDecisionList</a> formats, and a fully fledged Python API.</p>
+
+<!-- more -->
+
+
+<p>The module can be installed with pip via the <a href="http://pypi.python.org/pypi/cdl_convert/">pypi repo</a>:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>pip install cdl_convert    </span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or you can grab the source on <a href="https://github.com/shidarin/cdl_convert">github</a>.</p>
+
+<p>It&#8217;s got <a href="http://cdl-convert.readthedocs.org/">full documentation at ReadTheDocs</a>, and we use <a href="https://github.com/shidarin/cdl_convert/issues?state=open">issue tracking on github</a>.</p>
+
+<p>It&#8217;s mostly feature complete now- the only features it lacks are:</p>
+
+<ul>
+<li>Parse CMX EDL</li>
+<li>Parse OCIOCDLs in .nk scripts</li>
+<li>Write OCIOCDLs into .nk scripts</li>
+<li>Generate a Nuke node (if called from within a Nuke session)</li>
+</ul>
+
+
+<p>The rest are bug fixes.</p>
+
+<h2>Sample Script Usage</h2>
+
+<p>This will take a <code>FLEx</code> file, named <code>big_edl_with_cdls.flex</code>, and convert
+it to individual <code>cc</code> files.</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>cdl_convert big_edl_with_cdls.flex -o .cc</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Sample API usage</h2>
+
+<p>Parsing a file from disk:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">cdl_convert</span><span class="o">.</span><span class="n">parse_file</span><span class="p">(</span><span class="s">&#39;./xf/015.cc&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">slope</span>
+</span><span class='line'><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.02401&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.00804&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.89562&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">offset</span>
+</span><span class='line'><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;-0.00864&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;-0.00261&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.03612&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">power</span>
+</span><span class='line'><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.0&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.0&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.0&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">sat</span>
+</span><span class='line'><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;1.2&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'><span class="s">&#39;015_xf_seqGrade_v01&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">file_in</span>
+</span><span class='line'><span class="s">&#39;/Users/niven/cdls/xf/015.cc&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or create one from scratch and attach it to a collection:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">coll</span> <span class="o">=</span> <span class="n">cdl_convert</span><span class="o">.</span><span class="n">ColorCollection</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">cdl_convert</span><span class="o">.</span><span class="n">ColorCorrection</span><span class="p">(</span><span class="s">&#39;myUniqueId&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">slope</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="p">(</span>
+</span><span class='line'>    <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;2334.3789378921378901921738979&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;3789.32789137891278947891478912738972198731289&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.000000000000000000000000000000000001&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">power</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.243</span><span class="p">,</span> <span class="mf">4.53</span><span class="p">,</span> <span class="mf">9.23572</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="o">.</span><span class="n">sat</span> <span class="o">=</span> <span class="s">&#39;6.7&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">coll</span><span class="o">.</span><span class="n">append_child</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span>
+</span><span class='line'><span class="bp">True</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">coll</span><span class="o">.</span><span class="n">xml</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">ColorCorrectionCollection</span> <span class="n">xmlns</span><span class="o">=</span><span class="s">&quot;urn:ASC:CDL:v1.01&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">ColorCorrection</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;myUniqueId&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="n">SOPNode</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">Slope</span><span class="o">&gt;</span><span class="mf">1.0</span> <span class="mf">2.0</span> <span class="mf">3.0</span><span class="o">&lt;/</span><span class="n">Slope</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">Offset</span><span class="o">&gt;</span><span class="mf">2334.3789378921378901921738979</span> <span class="mf">3789.32789137891278947891478912738972198731289</span> <span class="mf">0.000000000000000000000000000000000001</span><span class="o">&lt;/</span><span class="n">Offset</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">Power</span><span class="o">&gt;</span><span class="mf">1.243</span> <span class="mf">4.53</span> <span class="mf">9.23572</span><span class="o">&lt;/</span><span class="n">Power</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;/</span><span class="n">SOPNode</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="n">SATNode</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">Saturation</span><span class="o">&gt;</span><span class="mf">6.7</span><span class="o">&lt;/</span><span class="n">Saturation</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;/</span><span class="n">SATNode</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;/</span><span class="n">ColorCorrection</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ColorCorrectionCollection</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">coll</span><span class="o">.</span><span class="n">set_to_cdl</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">coll</span><span class="o">.</span><span class="n">xml</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">ColorDecisionList</span> <span class="n">xmlns</span><span class="o">=</span><span class="s">&quot;urn:ASC:CDL:v1.01&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">ColorDecision</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="n">ColorCorrection</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;myUniqueId&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">SOPNode</span><span class="o">&gt;</span>
+</span><span class='line'>                <span class="o">&lt;</span><span class="n">Slope</span><span class="o">&gt;</span><span class="mf">1.0</span> <span class="mf">2.0</span> <span class="mf">3.0</span><span class="o">&lt;/</span><span class="n">Slope</span><span class="o">&gt;</span>
+</span><span class='line'>                <span class="o">&lt;</span><span class="n">Offset</span><span class="o">&gt;</span><span class="mf">2334.3789378921378901921738979</span> <span class="mf">3789.32789137891278947891478912738972198731289</span> <span class="mf">0.000000000000000000000000000000000001</span><span class="o">&lt;/</span><span class="n">Offset</span><span class="o">&gt;</span>
+</span><span class='line'>                <span class="o">&lt;</span><span class="n">Power</span><span class="o">&gt;</span><span class="mf">1.243</span> <span class="mf">4.53</span> <span class="mf">9.23572</span><span class="o">&lt;/</span><span class="n">Power</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;/</span><span class="n">SOPNode</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="n">SATNode</span><span class="o">&gt;</span>
+</span><span class='line'>                <span class="o">&lt;</span><span class="n">Saturation</span><span class="o">&gt;</span><span class="mf">6.7</span><span class="o">&lt;/</span><span class="n">Saturation</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;/</span><span class="n">SATNode</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;/</span><span class="n">ColorCorrection</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;/</span><span class="n">ColorDecision</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ColorDecisionList</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Share, enjoy and give feedback.</p>
+
+<p>Did I mention the test suite with <strong><em>glorious</em></strong> 100% coverage?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[SMPTE Timecode Segment]]></title>
