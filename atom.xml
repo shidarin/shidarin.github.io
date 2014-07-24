@@ -4,7 +4,7 @@
   <title><![CDATA[Coding at Windmills]]></title>
   <link href="http://shidarin.github.io/atom.xml" rel="self"/>
   <link href="http://shidarin.github.io/"/>
-  <updated>2014-07-08T18:06:30-07:00</updated>
+  <updated>2014-07-23T19:42:41-05:00</updated>
   <id>http://shidarin.github.io/</id>
   <author>
     <name><![CDATA[Sean Wallitsch]]></name>
@@ -14,9 +14,278 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Building a Better `nuke.allNodes`]]></title>
+    <link href="http://shidarin.github.io/2014/building-a-better-nukeallnodes/"/>
+    <updated>2014-07-21T11:04:00-05:00</updated>
+    <id>http://shidarin.github.io/2014/building-a-better-nukeallnodes</id>
+    <content type="html"><![CDATA[<p>Nuke&#8217;s built in <code>nuke.allNodes()</code> function offers two very useful features- the ability to filter for a single node class, and the ability to recurse deep into groups. What it doesn&#8217;t offer is the ability to do both at once. If you set a filter class and <code>recurseGroups=True</code>, the <code>recurseGroups</code> argument will be ignored and only the first level results will be found. Also of importance is that Nuke attempts to derive what <code>Group</code> you want to search within if you don&#8217;t provide a <code>group</code> argument, but it usually guesses poorly. Let&#8217;s fix those bugs as easily as we can.</p>
+
+<!-- more -->
+
+
+<h2>The Basics</h2>
+
+<p>Since we need to be a drop in replacement for <code>nuke.allNodes()</code>, we need to start with the same arguments, titled the same way, in the same order. This way you can import our <code>allNodes()</code> and have it override the <code>nuke.allNodes()</code>.</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">allNodes</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now let&#8217;s try for an exact passthrough of our given arguments. Nuke will trip us up here, as the default values for <code>filter</code> and <code>group</code> are not None, so we can&#8217;t just pass our exact received arguments in. Instead, we&#8217;ll construct a keyword argument dictionary, and pass that in.</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">allNodes</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s">&#39;filter&#39;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;recurseGroups&#39;</span><span class="p">:</span> <span class="n">recurseGroups</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># Remove empty arguments</span>
+</span><span class='line'>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">filter</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;filter&#39;</span><span class="p">]</span>
+</span><span class='line'>    <span class="k">if</span> <span class="ow">not</span> <span class="n">group</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;group&#39;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We now have a simple wrapper. Our arguments are passed through correctly when given, and <code>None</code> is never passed to <code>nuke.allNodes()</code>.</p>
+
+<h2>Fixing the Group Bug</h2>
+
+<p>If we want Nuke to stop attempting to (badly) guess what Group we want to search within, we&#8217;ll set the default <code>group</code> value to be <code>nuke.root()</code>:</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number marked'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number marked'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line marked start end'><span class="k">def</span> <span class="nf">allNodes</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">nuke</span><span class="o">.</span><span class="n">root</span><span class="p">(),</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s">&#39;filter&#39;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;recurseGroups&#39;</span><span class="p">:</span> <span class="n">recurseGroups</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># Remove empty arguments</span>
+</span><span class='line'>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">filter</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;filter&#39;</span><span class="p">]</span>
+</span><span class='line marked start end'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Fixing the Filter Bug</h2>
+
+<p>The bug occurs when both <code>recurseGroups=True</code> and a <code>filter</code> argument are passed to <code>nuke.allNodes()</code>. Anything else can be given and returned straight from the native <code>allNodes</code>. It then makes sense to start our function off with an <code>if</code> clause, placing the parts of the function we&#8217;ve already created behind the <code>else</code>:</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">allNodes</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">nuke</span><span class="o">.</span><span class="n">root</span><span class="p">(),</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nb">filter</span> <span class="ow">and</span> <span class="n">recurseGroups</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">pass</span>
+</span><span class='line'>    <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then we need to begin constructing the meat of the fix. We have two choices:</p>
+
+<ol>
+<li>Search for all group nodes with <code>nuke.allNodes()</code>, then execute <code>nuke.allNodes()</code> within those group nodes with the given <code>filter</code> argument.</li>
+<li>Search for all nodes period, then construct &amp; return a list containing only nodes which match our filter.</li>
+</ol>
+
+
+<p>Let&#8217;s use <code>timeit</code> to figure out which runs faster.</p>
+
+<h3>Timing the Fixes</h3>
+
+<p>I have a script with a bunch of group nodes, and some other nodes hidden inside. A few are ColorWheels, and we&#8217;ll search for those.</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">timeit</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Search for Groups, then search for wanted node</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">bygroup</span><span class="p">(</span><span class="nb">filter</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">all_groups</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="s">&#39;Group&#39;</span><span class="p">,</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">all_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">sub_group</span> <span class="ow">in</span> <span class="n">all_groups</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">all_nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">sub_group</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">all_nodes</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Search for all nodes, then use list comprehension to filter</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">listcomp</span><span class="p">(</span><span class="nb">filter</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">all_nodes</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="n">recurseGroups</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">all_nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">Class</span><span class="p">()</span> <span class="o">==</span> <span class="nb">filter</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Run each a million times</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># By Group ====================================================================</span>
+</span><span class='line'><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">&#39;bygroup(&quot;ColorWheel&quot;)&#39;</span><span class="p">,</span> <span class="s">&quot;from __main__ import bygroup&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+</span><span class='line'><span class="c"># Result:</span>
+</span><span class='line marked start end'><span class="mf">0.78045105934143066</span>
+</span><span class='line'><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">&#39;bygroup(&quot;ColorWheel&quot;)&#39;</span><span class="p">,</span> <span class="s">&quot;from __main__ import bygroup&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+</span><span class='line'><span class="c"># Result:</span>
+</span><span class='line marked start end'><span class="mf">0.79747390747070312</span>
+</span><span class='line'><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">&#39;bygroup(&quot;ColorWheel&quot;)&#39;</span><span class="p">,</span> <span class="s">&quot;from __main__ import bygroup&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+</span><span class='line'><span class="c"># Result:</span>
+</span><span class='line marked start end'><span class="mf">0.79068994522094727</span>
+</span><span class='line'><span class="c"># =============================================================================</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># List Comprehension ==========================================================</span>
+</span><span class='line'><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">&#39;listcomp(&quot;ColorWheel&quot;)&#39;</span><span class="p">,</span> <span class="s">&#39;from __main__ import listcomp&#39;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+</span><span class='line'><span class="c"># Result:</span>
+</span><span class='line marked start end'><span class="mf">0.75563311576843262</span>
+</span><span class='line'><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">&#39;listcomp(&quot;ColorWheel&quot;)&#39;</span><span class="p">,</span> <span class="s">&#39;from __main__ import listcomp&#39;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+</span><span class='line'><span class="c"># Result:</span>
+</span><span class='line marked start end'><span class="mf">0.74588203430175781</span>
+</span><span class='line'><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">&#39;listcomp(&quot;ColorWheel&quot;)&#39;</span><span class="p">,</span> <span class="s">&#39;from __main__ import listcomp&#39;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+</span><span class='line'><span class="c"># Result:</span>
+</span><span class='line marked start end'><span class="mf">0.74688887596130371</span>
+</span><span class='line'><span class="c"># =============================================================================</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The results are close enough to not really matter, but we&#8217;ll still use the list comprehension method because it&#8217;s cleaner <strong><em>and</em></strong> faster.</p>
+
+<h2>Final <code>allNodes()</code></h2>
+
+<p>Our final replacement for <code>nuke.allNodes()</code> looks like this:</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">allNodes</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">nuke</span><span class="o">.</span><span class="n">root</span><span class="p">(),</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</span><span class='line'>    <span class="sd">&quot;&quot;&quot; Wraps nuke.allNodes to allow filtering and recursing</span>
+</span><span class='line'><span class="sd">    </span>
+</span><span class='line'><span class="sd">    Args:</span>
+</span><span class='line'><span class="sd">        filter=None : (str)</span>
+</span><span class='line'><span class="sd">            A Nuke node name to filter for. Must be exact match.</span>
+</span><span class='line'><span class="sd">        </span>
+</span><span class='line'><span class="sd">        group=nuke.root() : (&lt;nuke.nodes.Group&gt;)</span>
+</span><span class='line'><span class="sd">            A Nuke node of type `Group` to search within. If not provided, will</span>
+</span><span class='line'><span class="sd">            begin the search at the root level.</span>
+</span><span class='line'><span class="sd">        </span>
+</span><span class='line'><span class="sd">        recurseGroups=False : (bool)</span>
+</span><span class='line'><span class="sd">            If we should continue our search into any encountered group nodes.</span>
+</span><span class='line'><span class="sd">    </span>
+</span><span class='line'><span class="sd">    Returns:</span>
+</span><span class='line'><span class="sd">        [&lt;nuke.Node&gt;]</span>
+</span><span class='line'><span class="sd">            A list of any Nuke nodes found whose Class matches the given filter.</span>
+</span><span class='line'><span class="sd">    </span>
+</span><span class='line'><span class="sd">    Raises:</span>
+</span><span class='line'><span class="sd">        N/A</span>
+</span><span class='line'><span class="sd">    </span>
+</span><span class='line'><span class="sd">    &quot;&quot;&quot;</span>
+</span><span class='line'>    <span class="c"># First we&#39;ll check if we need to execute our custom allNodes function.</span>
+</span><span class='line'>    <span class="c"># If we don&#39;t have a filter AND recurseGroups=True, `nuke.allNodes` will</span>
+</span><span class='line'>    <span class="c"># do the job fine.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nb">filter</span> <span class="ow">and</span> <span class="n">recurseGroups</span><span class="p">:</span>
+</span><span class='line'>        <span class="c"># Search for every node, then filter using a list comprehension.</span>
+</span><span class='line'>        <span class="c"># Faster than searching for all groups, then searching again</span>
+</span><span class='line'>        <span class="c"># for the filter.</span>
+</span><span class='line'>        <span class="n">all_nodes</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">all_nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">Class</span><span class="p">()</span> <span class="o">==</span> <span class="nb">filter</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>        <span class="c"># We just need to execute Nuke&#39;s `nuke.allNodes` function.</span>
+</span><span class='line'>        <span class="c"># But we need to modify our list of keyword arguments and remove</span>
+</span><span class='line'>        <span class="c"># the filter argument if it wasn&#39;t passed, otherwise Nuke chokes.</span>
+</span><span class='line'>        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>            <span class="s">&#39;filter&#39;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span>
+</span><span class='line'>            <span class="s">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span>
+</span><span class='line'>            <span class="s">&#39;recurseGroups&#39;</span><span class="p">:</span> <span class="n">recurseGroups</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># Remove empty arguments</span>
+</span><span class='line'>        <span class="k">if</span> <span class="ow">not</span> <span class="nb">filter</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;filter&#39;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[cdl_convert Beta Release]]></title>
     <link href="http://shidarin.github.io/2014/convert-beta-release/"/>
-    <updated>2014-06-15T11:52:00-07:00</updated>
+    <updated>2014-06-15T11:52:00-05:00</updated>
     <id>http://shidarin.github.io/2014/convert-beta-release</id>
     <content type="html"><![CDATA[<p>The last few months I&#8217;ve been working on a python module that works as both a simple script to convert between <a href="http://en.wikipedia.org/wiki/ASC_CDL">ASC ColorDecisionList</a> formats, and a fully fledged Python API.</p>
 
@@ -129,7 +398,7 @@ it to individual <code>cc</code> files.</p>
   <entry>
     <title type="html"><![CDATA[SMPTE Timecode Segment]]></title>
     <link href="http://shidarin.github.io/2014/SMPTE-Timecode-Segment/"/>
-    <updated>2014-04-19T15:50:00-07:00</updated>
+    <updated>2014-04-19T15:50:00-05:00</updated>
     <id>http://shidarin.github.io/2014/SMPTE-Timecode-Segment</id>
     <content type="html"><![CDATA[<p>While developing a test suite for another project, I started writing a bit of python to generate SMPTE timecode- start, end, and duration. I needed to have the ability for it to generate random timecode as well.</p>
 
@@ -182,7 +451,7 @@ subtracted, delta&#8217;d etc.</p>
   <entry>
     <title type="html"><![CDATA[Nuke Python Module Tips]]></title>
     <link href="http://shidarin.github.io/2014/Nuke-Python-Module-Tips/"/>
-    <updated>2014-04-09T11:54:00-07:00</updated>
+    <updated>2014-04-09T11:54:00-05:00</updated>
     <id>http://shidarin.github.io/2014/Nuke-Python-Module-Tips</id>
     <content type="html"><![CDATA[<p>Using the Nuke 8 python module allows us to use Nuke in a lot of great ways, but there are some tricks to using it correctly. I&#8217;ll cover adding the Nuke library to the python path, using Nuke in a tool with command line arguments, and some common errors.</p>
 
@@ -388,7 +657,7 @@ to another variable and re-assign them after we import nuke.</p>
   <entry>
     <title type="html"><![CDATA[Controlling Nuke LUT behavior]]></title>
     <link href="http://shidarin.github.io/2013/controlling-nuke-lut-behavior/"/>
-    <updated>2013-12-22T14:33:00-08:00</updated>
+    <updated>2013-12-22T14:33:00-06:00</updated>
     <id>http://shidarin.github.io/2013/controlling-nuke-lut-behavior</id>
     <content type="html"><![CDATA[<p>The LUT implementation steps that Foundry advises for both 1D and 3D LUTs can use some work. By default, the 1D LUTs affect every channel (even alphas). For 3D LUTs it depends on the node used, but problems can vary from only affecting the default <code>rgb</code> to touching every layer- even data layers.</p>
 
