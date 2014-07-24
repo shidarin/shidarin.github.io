@@ -9,6 +9,8 @@ categories: nuke python
 
 Nuke's built in `nuke.allNodes()` function offers two very useful features- the ability to filter for a single node class, and the ability to recurse deep into groups. What it doesn't offer is the ability to do both at once. If you set a filter class and `recurseGroups=True`, the `recurseGroups` argument will be ignored and only the first level results will be found. Also of importance is that Nuke attempts to derive what `Group` you want to search within if you don't provide a `group` argument, but it usually guesses poorly. Let's fix those bugs as easily as we can.
 
+<!-- more -->
+
 ## The Basics
 
 Since we need to be a drop in replacement for `nuke.allNodes()`, we need to start with the same arguments, titled the same way, in the same order. This way you can import our `allNodes()` and have it override the `nuke.allNodes()`.
