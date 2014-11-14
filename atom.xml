@@ -4,7 +4,7 @@
   <title><![CDATA[Coding at Windmills]]></title>
   <link href="http://shidarin.github.io/atom.xml" rel="self"/>
   <link href="http://shidarin.github.io/"/>
-  <updated>2014-07-23T19:42:41-05:00</updated>
+  <updated>2014-11-14T11:58:44-08:00</updated>
   <id>http://shidarin.github.io/</id>
   <author>
     <name><![CDATA[Sean Wallitsch]]></name>
@@ -14,9 +14,49 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Poster Photography & The X-Rite ColorChecker Passport]]></title>
+    <link href="http://shidarin.github.io/2014/poster-photography/"/>
+    <updated>2014-11-06T17:20:00-08:00</updated>
+    <id>http://shidarin.github.io/2014/poster-photography</id>
+    <content type="html"><![CDATA[<p>A quick look at a color accurate photography for screen printed posters, and a review of the X-rite ColorChecker passport.</p>
+
+<!-- more -->
+
+
+<p><img class="" src="http://i.imgur.com/HDfm2tZ.jpg" title="The Fifth Element by Kilian Eng" alt="Picture of the bottom half of Kilian Eng"></p>
+
+<p>One of my hobbies is collecting limited edition screen printed posters, things like <a href="http://i.imgur.com/T3F4tYA.jpg"><em>Spirited Away</em></a> by Olly Moss or <a href="http://i.imgur.com/e2FOFsO.jpg"><em>Don&#8217;t Walk</em></a> (from <em>Blade Runner</em>) by Chris Thornley. Since another one of my hobbies is photography, it was only a matter of time before I began to go overboard combining the two.</p>
+
+<p>A site called <a href="http://expressobeans.com/">ExpressoBeans.com</a> acts as a database for these prints, and let&#8217;s users submit additional photography for any prints, so that other users can get a better idea of how the print looks like in person.</p>
+
+<p>Despite all these additional photos, collectors frequently run into two problems:</p>
+
+<ol>
+<li>The print, once actually screen printed, always looks slightly different from the <em>official</em> preview image released by the artist or gallery.</li>
+<li>Detail photographs taken by hobbyists always end up with varied colors from <a href="http://expressobeans.com/remote/53213:196754.jpg">each</a> <a href="http://expressobeans.com/remote/53213:196755.jpg">other</a>, and are rarely true to the actual print.</li>
+</ol>
+
+
+<p>I decided that I would strive to provide the best, most color accurate, photos of all the screen prints in my collection.</p>
+
+<h2>Photography Setup</h2>
+
+<p>Photographers of prints usually run into several issues arising from the nature of the prints themselves.</p>
+
+<ul>
+<li>Prints that were shipped rolled up can take weeks to flatten 98% of the way, and even months later might still have the remaining 2% at their very tips.</li>
+<li>Without framing the prints, it&#8217;s difficult to stand a screen print vertically. Frequently screen prints are photographed flat on a table, floor, bed or other clear surface.</li>
+</ul>
+
+
+<p>To solve these problems, I took a <a href="http://www.dickblick.com/products/elmers-acid-free-foamboard/">32x40 acid-free foamboard</a> and an extra <a href="http://www.framedestination.com/bags/protective_crystal_clear_bags/item/BGPRBA/">mylar poster bag</a>. Cutting up the poster bag, I was left with several 3 inch strips of mylar that I wrapped around the top and bottom of the foamboard. Prints could now be slipped under the mylar straps to keep prints flat during photography.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Building a Better `nuke.allNodes`]]></title>
     <link href="http://shidarin.github.io/2014/building-a-better-nukeallnodes/"/>
-    <updated>2014-07-21T11:04:00-05:00</updated>
+    <updated>2014-07-21T11:04:00-07:00</updated>
     <id>http://shidarin.github.io/2014/building-a-better-nukeallnodes</id>
     <content type="html"><![CDATA[<p>Nuke&#8217;s built in <code>nuke.allNodes()</code> function offers two very useful features- the ability to filter for a single node class, and the ability to recurse deep into groups. What it doesn&#8217;t offer is the ability to do both at once. If you set a filter class and <code>recurseGroups=True</code>, the <code>recurseGroups</code> argument will be ignored and only the first level results will be found. Also of importance is that Nuke attempts to derive what <code>Group</code> you want to search within if you don&#8217;t provide a <code>group</code> argument, but it usually guesses poorly. Let&#8217;s fix those bugs as easily as we can.</p>
 
@@ -258,7 +298,7 @@
 </span><span class='line'>        <span class="c"># Search for every node, then filter using a list comprehension.</span>
 </span><span class='line'>        <span class="c"># Faster than searching for all groups, then searching again</span>
 </span><span class='line'>        <span class="c"># for the filter.</span>
-</span><span class='line'>        <span class="n">all_nodes</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">all_nodes</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="k">return</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">all_nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">Class</span><span class="p">()</span> <span class="o">==</span> <span class="nb">filter</span><span class="p">]</span>
 </span><span class='line'>
@@ -285,7 +325,7 @@
   <entry>
     <title type="html"><![CDATA[cdl_convert Beta Release]]></title>
     <link href="http://shidarin.github.io/2014/convert-beta-release/"/>
-    <updated>2014-06-15T11:52:00-05:00</updated>
+    <updated>2014-06-15T11:52:00-07:00</updated>
     <id>http://shidarin.github.io/2014/convert-beta-release</id>
     <content type="html"><![CDATA[<p>The last few months I&#8217;ve been working on a python module that works as both a simple script to convert between <a href="http://en.wikipedia.org/wiki/ASC_CDL">ASC ColorDecisionList</a> formats, and a fully fledged Python API.</p>
 
@@ -398,7 +438,7 @@ it to individual <code>cc</code> files.</p>
   <entry>
     <title type="html"><![CDATA[SMPTE Timecode Segment]]></title>
     <link href="http://shidarin.github.io/2014/SMPTE-Timecode-Segment/"/>
-    <updated>2014-04-19T15:50:00-05:00</updated>
+    <updated>2014-04-19T15:50:00-07:00</updated>
     <id>http://shidarin.github.io/2014/SMPTE-Timecode-Segment</id>
     <content type="html"><![CDATA[<p>While developing a test suite for another project, I started writing a bit of python to generate SMPTE timecode- start, end, and duration. I needed to have the ability for it to generate random timecode as well.</p>
 
@@ -451,7 +491,7 @@ subtracted, delta&#8217;d etc.</p>
   <entry>
     <title type="html"><![CDATA[Nuke Python Module Tips]]></title>
     <link href="http://shidarin.github.io/2014/Nuke-Python-Module-Tips/"/>
-    <updated>2014-04-09T11:54:00-05:00</updated>
+    <updated>2014-04-09T11:54:00-07:00</updated>
     <id>http://shidarin.github.io/2014/Nuke-Python-Module-Tips</id>
     <content type="html"><![CDATA[<p>Using the Nuke 8 python module allows us to use Nuke in a lot of great ways, but there are some tricks to using it correctly. I&#8217;ll cover adding the Nuke library to the python path, using Nuke in a tool with command line arguments, and some common errors.</p>
 
@@ -657,7 +697,7 @@ to another variable and re-assign them after we import nuke.</p>
   <entry>
     <title type="html"><![CDATA[Controlling Nuke LUT behavior]]></title>
     <link href="http://shidarin.github.io/2013/controlling-nuke-lut-behavior/"/>
-    <updated>2013-12-22T14:33:00-06:00</updated>
+    <updated>2013-12-22T14:33:00-08:00</updated>
     <id>http://shidarin.github.io/2013/controlling-nuke-lut-behavior</id>
     <content type="html"><![CDATA[<p>The LUT implementation steps that Foundry advises for both 1D and 3D LUTs can use some work. By default, the 1D LUTs affect every channel (even alphas). For 3D LUTs it depends on the node used, but problems can vary from only affecting the default <code>rgb</code> to touching every layer- even data layers.</p>
 

@@ -103,7 +103,7 @@
   
 
 
-<time datetime="2014-07-21T11:04:00-05:00" pubdate data-updated="true">Jul 21<span>st</span>, 2014</time> - 
+<time datetime="2014-07-21T11:04:00-07:00" pubdate data-updated="true">Jul 21<span>st</span>, 2014</time> - 
         
 
 posted in
@@ -360,7 +360,7 @@ posted in
 </span><span class='line'>        <span class="c"># Search for every node, then filter using a list comprehension.</span>
 </span><span class='line'>        <span class="c"># Faster than searching for all groups, then searching again</span>
 </span><span class='line'>        <span class="c"># for the filter.</span>
-</span><span class='line'>        <span class="n">all_nodes</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">all_nodes</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">allNodes</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">recurseGroups</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="k">return</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">all_nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">Class</span><span class="p">()</span> <span class="o">==</span> <span class="nb">filter</span><span class="p">]</span>
 </span><span class='line'>
@@ -407,7 +407,7 @@ posted in
   
 
 
-<time datetime="2014-07-21T11:04:00-05:00" pubdate data-updated="true">Jul 21<span>st</span>, 2014</time> - 
+<time datetime="2014-07-21T11:04:00-07:00" pubdate data-updated="true">Jul 21<span>st</span>, 2014</time> - 
       
 
 posted in
@@ -431,6 +431,8 @@ posted in
       <a class="pull-left" href="/2014/convert-beta-release/" title="Previous Post: cdl_convert Beta Release">&laquo; cdl_convert Beta Release</a>
     
     
+      <a class="pull-right" href="/2014/poster-photography/" title="Next Post: Poster Photography & The X-Rite ColorChecker Passport">Poster Photography & The X-Rite ColorChecker Passport &raquo;</a>
+    
   </footer>
 
 </div>
@@ -447,6 +449,10 @@ posted in
     <ul class="recent_posts">
       
         <li>
+          <a href="/2014/poster-photography/">Poster Photography & The X-Rite ColorChecker Passport</a>
+        </li>
+      
+        <li>
           <a href="/2014/building-a-better-nukeallnodes/">Building a Better `nuke.allNodes`</a>
         </li>
       
@@ -460,10 +466,6 @@ posted in
       
         <li>
           <a href="/2014/Nuke-Python-Module-Tips/">Nuke Python Module Tips</a>
-        </li>
-      
-        <li>
-          <a href="/2013/controlling-nuke-lut-behavior/">Controlling Nuke LUT behavior</a>
         </li>
       
     </ul>
