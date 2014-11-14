@@ -4,7 +4,7 @@
   <title><![CDATA[Coding at Windmills]]></title>
   <link href="http://shidarin.github.io/atom.xml" rel="self"/>
   <link href="http://shidarin.github.io/"/>
-  <updated>2014-11-14T11:58:44-08:00</updated>
+  <updated>2014-11-14T12:00:04-08:00</updated>
   <id>http://shidarin.github.io/</id>
   <author>
     <name><![CDATA[Sean Wallitsch]]></name>
@@ -12,46 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Poster Photography & The X-Rite ColorChecker Passport]]></title>
-    <link href="http://shidarin.github.io/2014/poster-photography/"/>
-    <updated>2014-11-06T17:20:00-08:00</updated>
-    <id>http://shidarin.github.io/2014/poster-photography</id>
-    <content type="html"><![CDATA[<p>A quick look at a color accurate photography for screen printed posters, and a review of the X-rite ColorChecker passport.</p>
-
-<!-- more -->
-
-
-<p><img class="" src="http://i.imgur.com/HDfm2tZ.jpg" title="The Fifth Element by Kilian Eng" alt="Picture of the bottom half of Kilian Eng"></p>
-
-<p>One of my hobbies is collecting limited edition screen printed posters, things like <a href="http://i.imgur.com/T3F4tYA.jpg"><em>Spirited Away</em></a> by Olly Moss or <a href="http://i.imgur.com/e2FOFsO.jpg"><em>Don&#8217;t Walk</em></a> (from <em>Blade Runner</em>) by Chris Thornley. Since another one of my hobbies is photography, it was only a matter of time before I began to go overboard combining the two.</p>
-
-<p>A site called <a href="http://expressobeans.com/">ExpressoBeans.com</a> acts as a database for these prints, and let&#8217;s users submit additional photography for any prints, so that other users can get a better idea of how the print looks like in person.</p>
-
-<p>Despite all these additional photos, collectors frequently run into two problems:</p>
-
-<ol>
-<li>The print, once actually screen printed, always looks slightly different from the <em>official</em> preview image released by the artist or gallery.</li>
-<li>Detail photographs taken by hobbyists always end up with varied colors from <a href="http://expressobeans.com/remote/53213:196754.jpg">each</a> <a href="http://expressobeans.com/remote/53213:196755.jpg">other</a>, and are rarely true to the actual print.</li>
-</ol>
-
-
-<p>I decided that I would strive to provide the best, most color accurate, photos of all the screen prints in my collection.</p>
-
-<h2>Photography Setup</h2>
-
-<p>Photographers of prints usually run into several issues arising from the nature of the prints themselves.</p>
-
-<ul>
-<li>Prints that were shipped rolled up can take weeks to flatten 98% of the way, and even months later might still have the remaining 2% at their very tips.</li>
-<li>Without framing the prints, it&#8217;s difficult to stand a screen print vertically. Frequently screen prints are photographed flat on a table, floor, bed or other clear surface.</li>
-</ul>
-
-
-<p>To solve these problems, I took a <a href="http://www.dickblick.com/products/elmers-acid-free-foamboard/">32x40 acid-free foamboard</a> and an extra <a href="http://www.framedestination.com/bags/protective_crystal_clear_bags/item/BGPRBA/">mylar poster bag</a>. Cutting up the poster bag, I was left with several 3 inch strips of mylar that I wrapped around the top and bottom of the foamboard. Prints could now be slipped under the mylar straps to keep prints flat during photography.</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Building a Better `nuke.allNodes`]]></title>
